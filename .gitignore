@@ -1,2 +1,11 @@
 *.class
 *.log
+
+.idea
+.bsp
+/build/
+/src/index.js
+node_modules
+/target/
+/project/target/
+package-lock.json

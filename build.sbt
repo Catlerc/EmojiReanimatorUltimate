@@ -1,6 +1,6 @@
 ThisBuild / version := "0.1.0-SNAPSHOT"
 
-ThisBuild / scalaVersion := "2.13.10"
+ThisBuild / scalaVersion := "3.2.2"//"2.13.10"
 
 val ScalaJsReactVer = "2.1.1"
 
@@ -31,23 +31,36 @@ lazy val root = (project in file("."))
     ),
 
 
-    Compile / fastOptJS / artifactPath := baseDirectory.value / "src/index.js",
+    Compile / fastOptJS / artifactPath := baseDirectory.value / "src/nodes.js",
     Compile / fastOptJS / scalaJSLinkerConfig ~= {
       _.withSourceMap(false)
     },
 
-    Compile / fullOptJS / artifactPath := baseDirectory.value / "src/index.js",
+    Compile / fullOptJS / artifactPath := baseDirectory.value / "src/nodes.js",
     Compile / fullOptJS / scalaJSLinkerConfig ~= {
       _.withSourceMap(false)
     },
     jsEnv := new org.scalajs.jsenv.nodejs.NodeJSEnv(),
 
+    //    scalaJSLinkerConfig ~= {
+    //      _.withModuleKind(ModuleKind.ESModule)
+    //    },
 
-    scalaJSUseMainModuleInitializer := true,
+//    scalaJSUseMainModuleInitializer := true,
 
     Compile / npmDependencies ++= Seq(
-      "react" -> "17.0.2",
-      "react-dom" -> "17.0.2")
+      "react" -> "18.2.0",
+      "react-dom" -> "18.2.0",
+      "rete" -> "1.5.0",
+      "rete-react-render-plugin" -> "0.3.1",
+      "rete" -> "1.4.1",
+      "rete-area-plugin" -> "0.2.1",
+      "rete-connection-plugin" -> "0.7.0",
+      "rete-context-menu-plugin" -> "0.3.7",
+      "rete-react-render-plugin" -> "0.2.0",
+//      "efficy-rete-context-menu-plugin" -> "1.0.0-alpha9"
+
+    )
 
 
   ).enablePlugins(ScalaJSPlugin).enablePlugins(ScalaJSBundlerPlugin)

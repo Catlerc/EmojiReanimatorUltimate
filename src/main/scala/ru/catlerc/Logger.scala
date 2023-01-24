@@ -3,6 +3,7 @@ package ru.catlerc
 import cats.effect._
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.html_<^._
+import japgolly.scalajs.react.util.EffectCatsEffect.io
 // Cats Effect example code
 // ========================
 
@@ -27,15 +28,7 @@ object Counter {
     .useStateBy(_.initialCount)
     .render { (props, state) =>
 
-      val inc: SyncIO[Unit] =
-      // Depending on which scalajs-react modules you're using, you'll use one of the following:
-      //
-      // 1. If you're using "core-ext-cats_effect" and "core", then:
-        state.withEffect[SyncIO].modState(_ + 1)
-      //
-      // 2. If you're using "core-bundle-cats_effect" instead of "core",
-      //    then Cats Effect types are the defaults and you'd use:
-      // state.modState(_ + 1)
+      val inc: SyncIO[Unit] = state.modState(_ + 1)
 
       val incAndLog: IO[Unit] =
         props.logger("counter", inc.to[IO])
@@ -55,7 +48,7 @@ final class CounterAndLog($: BackendScope[Unit, String]) {
 
   private val logger =
   // As mentioned above, `.withEffect[SyncIO]` isn't needed when you've chosen Cats Effect as your default effect type
-    Logger(str => $.withEffect[SyncIO].modState(_ + "\n" + str))
+    Logger(str => $.modState(_ + "\n" + str))
 
   private val counter =
     Counter()(CounterProps(0, logger))
@@ -63,6 +56,11 @@ final class CounterAndLog($: BackendScope[Unit, String]) {
   def render(state: String): VdomNode = {
     <.div(
       counter,
+      <.div(
+        ^.id := "rete",
+        ^.width := 10.cm,
+        ^.height := 10.cm
+      ),
       <.pre(
         ^.marginTop := 0.5.em,
         ^.width := 40.ex,
